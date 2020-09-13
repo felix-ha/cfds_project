@@ -31,9 +31,8 @@ def preprocess_for_supervised_learning(df):
     df_y = df.iloc[:,0]
     
     df_variables.index = df_variables.index.shift(periods = 1,  freq ='Y')
-    
-    
-    df = df_variables.join(df_y, how='inner')
+   
+    df = pd.DataFrame(df_y).join(df_variables, how='inner')
     
     return df
 
