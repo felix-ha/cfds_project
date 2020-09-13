@@ -56,7 +56,7 @@ def get_synthetic_dataset():
     
     # creating timestamps as index
     
-    index = pd.date_range('1900', periods=len(t), freq='Y')
+    index = pd.date_range('1900', periods=len(t), freq='Y').to_pydatetime()
     
     # higher frequency
     # pd.date_range('2015-06-30', periods=8, freq='6M')
