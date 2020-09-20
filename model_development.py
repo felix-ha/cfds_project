@@ -31,13 +31,17 @@ def forecast(model, df_training, df_prediction):
     return result
 
 
+# =============================================================================
+# # Get, preprocess and split data 
+# =============================================================================
+
 df = get_synthetic_dataset()
 df = convert_time_series_to_relative(df)
 df = preprocess_for_supervised_learning(df)
 
 start = df.index[0] 
 end = df.index[-1]
-start_forecast = datetime.datetime(2100, 12, 31)
+start_forecast = datetime.datetime(2000, 12, 31)
 t_train = df.index[df.index < start_forecast]
 t_forecast = df.index[df.index >= start_forecast]
 
@@ -46,33 +50,91 @@ df_prediction = df.loc[t_forecast,:]
 y_predict = df_prediction['y'].values
 
 
-model = LinearRegression()
-#model = GradientBoostingRegressor(n_estimators = 70, max_depth = 2, min_samples_split=2, learning_rate = 0.5)
 
+# =============================================================================
+# # Fitting Models - a list of models, each is a tuple
+# =============================================================================
+
+models = []
+
+
+name = 'OLS'
+model = LinearRegression()
 y_forecast = forecast(model, df_training, df_prediction)
 y_forecast = y_forecast.values
+mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
+models.append( (name, y_forecast, mse))
+
+name = 'GBM1'
+model = GradientBoostingRegressor(n_estimators = 5, max_depth = 3, 
+                                  min_samples_split=2, learning_rate = 0.8)
+y_forecast = forecast(model, df_training, df_prediction)
+y_forecast = y_forecast.values
+mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
+models.append( (name, y_forecast, mse))
 
 
-mse = mean_squared_error(y_forecast, y_predict)
+name = 'GBM2'
+model = GradientBoostingRegressor(n_estimators = 20, max_depth = 2, 
+                                  min_samples_split=2, learning_rate = 0.5)
+y_forecast = forecast(model, df_training, df_prediction)
+y_forecast = y_forecast.values
+mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
+models.append( (name, y_forecast, mse))
+
+name = 'GBM3'
+model = GradientBoostingRegressor(n_estimators = 15, max_depth = 2, 
+                                  min_samples_split=3, learning_rate = 0.5)
+y_forecast = forecast(model, df_training, df_prediction)
+y_forecast = y_forecast.values
+mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
+models.append( (name, y_forecast, mse))
 
 
+name = 'GBM4'
+model = GradientBoostingRegressor(n_estimators = 10, max_depth = 3, 
+                                  min_samples_split=2, learning_rate = 0.5)
+y_forecast = forecast(model, df_training, df_prediction)
+y_forecast = y_forecast.values
+mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
+models.append( (name, y_forecast, mse))
 
-# Cast datetimes for matplotlib
+
+name = 'GBM5'
+model = GradientBoostingRegressor(n_estimators = 5, max_depth = 10, 
+                                  min_samples_split=2, learning_rate = 0.9)
+y_forecast = forecast(model, df_training, df_prediction)
+y_forecast = y_forecast.values
+mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
+models.append( (name, y_forecast, mse))
+
+
+# =============================================================================
+# # Create Plot
+# =============================================================================
 
 fig, ax = plt.subplots()
 
-ax.plot(df['y'], label='real')
-ax.plot(t_forecast,y_forecast, label='OLS - mse: ' + str(round(mse,2)), alpha=0.7)
+ax.plot(np.exp(df['y']), label='real')
+
+for model in models:
+    name = model[0]
+    y_forecast = model[1]
+    mse = model[2]
+    
+    label = name + ' ' + str(round(mse,2))
+    
+    ax.plot(t_forecast, np.exp(y_forecast), label=label, alpha=0.5)
 
 ax.axvline(x=start_forecast, ymin=0, ymax=1, color='black',linestyle='--', alpha=0.5)
 
 ax.set_xlabel('year') 
-ax.set_ylabel('change in %') 
+ax.set_ylabel('GDP growth change in %') 
 ax.set_title("GDP growth - real vs. forecast")
 ax.legend()
 fig.autofmt_xdate()
 plt.grid()
 
 
-#plt.savefig('forecast_out_of_time.png', dpi = 350)
+#plt.savefig('forecast_out_of_time.png', dpi = 400)
 #plt.close()
