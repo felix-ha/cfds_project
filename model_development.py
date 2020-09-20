@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import GradientBoostingRegressor 
 from sklearn.metrics import mean_squared_error
+from statsmodels.tsa.arima_model import ARIMA
 
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-dark')
@@ -57,6 +58,17 @@ y_predict = df_prediction['y'].values
 
 models = []
 
+# =============================================================================
+# # ToDo: implment WEO
+# name = 'WEO'
+# model = GradientBoostingRegressor(n_estimators = 20, max_depth = 2, 
+#                                   min_samples_split=2, learning_rate = 0.5)
+# y_forecast = forecast(model, df_training, df_prediction)
+# y_forecast = y_forecast.values
+# mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
+# models.append( (name, y_forecast, mse))
+# =============================================================================
+
 
 name = 'OLS'
 model = LinearRegression()
@@ -65,44 +77,24 @@ y_forecast = y_forecast.values
 mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
 models.append( (name, y_forecast, mse))
 
-name = 'GBM1'
-model = GradientBoostingRegressor(n_estimators = 5, max_depth = 3, 
-                                  min_samples_split=2, learning_rate = 0.8)
-y_forecast = forecast(model, df_training, df_prediction)
-y_forecast = y_forecast.values
+
+# ARIMA: order = [p,d,q]
+name = 'ARIMA'
+model = ARIMA(endog=df_training.iloc[:,0],exog=df_training.iloc[:,1:],order=[1,0,0])
+results=model.fit()
+
+y_forecast = []
+for i in range(len(t_forecast)):
+    exog = df_prediction.iloc[i,1:]
+    output = results.forecast(exog = exog)
+    y_forecast.append(output[0])
 mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
 models.append( (name, y_forecast, mse))
 
 
-name = 'GBM2'
-model = GradientBoostingRegressor(n_estimators = 20, max_depth = 2, 
-                                  min_samples_split=2, learning_rate = 0.5)
-y_forecast = forecast(model, df_training, df_prediction)
-y_forecast = y_forecast.values
-mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
-models.append( (name, y_forecast, mse))
-
-name = 'GBM3'
-model = GradientBoostingRegressor(n_estimators = 15, max_depth = 2, 
-                                  min_samples_split=3, learning_rate = 0.5)
-y_forecast = forecast(model, df_training, df_prediction)
-y_forecast = y_forecast.values
-mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
-models.append( (name, y_forecast, mse))
-
-
-name = 'GBM4'
-model = GradientBoostingRegressor(n_estimators = 10, max_depth = 3, 
-                                  min_samples_split=2, learning_rate = 0.5)
-y_forecast = forecast(model, df_training, df_prediction)
-y_forecast = y_forecast.values
-mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
-models.append( (name, y_forecast, mse))
-
-
-name = 'GBM5'
-model = GradientBoostingRegressor(n_estimators = 5, max_depth = 10, 
-                                  min_samples_split=2, learning_rate = 0.9)
+name = 'GBM'
+model = GradientBoostingRegressor(n_estimators = 50, max_depth = 2, 
+                                  min_samples_split=10, learning_rate = 0.03)
 y_forecast = forecast(model, df_training, df_prediction)
 y_forecast = y_forecast.values
 mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
@@ -110,7 +102,29 @@ models.append( (name, y_forecast, mse))
 
 
 # =============================================================================
-# # Create Plot
+# name = 'RNN'
+# model = GradientBoostingRegressor(n_estimators = 10, max_depth = 3, 
+#                                   min_samples_split=2, learning_rate = 0.5)
+# y_forecast = forecast(model, df_training, df_prediction)
+# y_forecast = y_forecast.values
+# mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
+# models.append( (name, y_forecast, mse))
+# =============================================================================
+
+
+# =============================================================================
+# name = 'RL'
+# model = GradientBoostingRegressor(n_estimators = 5, max_depth = 10, 
+#                                   min_samples_split=2, learning_rate = 0.9)
+# y_forecast = forecast(model, df_training, df_prediction)
+# y_forecast = y_forecast.values
+# mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
+# models.append( (name, y_forecast, mse))
+# =============================================================================
+
+
+# =============================================================================
+# # Create Plots
 # =============================================================================
 
 fig, ax = plt.subplots()
@@ -122,7 +136,7 @@ for model in models:
     y_forecast = model[1]
     mse = model[2]
     
-    label = name + ' ' + str(round(mse,2))
+    label = name + ' ' + str(round(mse,3))
     
     ax.plot(t_forecast, np.exp(y_forecast), label=label, alpha=0.5)
 
