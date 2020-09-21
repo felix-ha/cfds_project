@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import GradientBoostingRegressor 
 from sklearn.metrics import mean_squared_error
-from statsmodels.tsa.arima_model import ARIMA
+from pmdarima.arima import auto_arima
 
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-dark')
@@ -78,16 +78,28 @@ mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
 models.append( (name, y_forecast, mse))
 
 
-# ARIMA: order = [p,d,q]
-name = 'ARIMA'
-model = ARIMA(endog=df_training.iloc[:,0],exog=df_training.iloc[:,1:],order=[1,0,0])
-results=model.fit()
 
-y_forecast = []
-for i in range(len(t_forecast)):
-    exog = df_prediction.iloc[i,1:]
-    output = results.forecast(exog = exog)
-    y_forecast.append(output[0])
+name = 'ARIMA'
+
+y_train = df_training.iloc[:, 0]
+X_train = df_training.iloc[:, 1:]
+y_test = df_prediction.iloc[:, 0]
+X_test = df_prediction.iloc[:, 1:]
+
+model = auto_arima(y = y_train,
+                   trace=True, 
+                   start_p=0,
+                   max_p=3,
+                   start_q=0,
+                   max_q=3,
+                   seasonal = False,
+                   stepwise= True,
+                   exogenous=X_train) 
+
+model.fit(y= y_train, exogenous=X_train)
+
+y_forecast = model.predict(n_periods=y_test.shape[0],
+                      exogenous = X_test)
 mse = mean_squared_error(np.exp(y_forecast), np.exp(y_predict))
 models.append( (name, y_forecast, mse))
 
