@@ -3,7 +3,7 @@ from data_handling import get_synthetic_dataset, preprocess_for_supervised_learn
 import datetime
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, TensorDataset
-
+import os
 
 
 # =============================================================================
@@ -24,10 +24,13 @@ df_training = df.loc[t_train,:]
 df_prediction = df.loc[t_forecast,:]
 y_predict = df_prediction['y'].values
 
+
+
+# Prepare Data for RNN
+
+
 N, dummy_dim = df_training.shape
 dummy_dim -= 1
-
-
 
 time_steps = 15
 horizon = 1
@@ -51,7 +54,7 @@ for i in range(max_index):
 # =============================================================================
     
     
-from torch import nn, no_grad
+from torch import nn, no_grad, save, load
 from torch import from_numpy, zeros
 from torch.optim import SGD
 
@@ -80,14 +83,14 @@ class RNN(nn.Module):
 N, seq_len, dummy_dim = X.shape
 
 input_size=dummy_dim
-hidden_dim=10
+hidden_dim=5
 n_layers=1
 output_size=1
 
-n_epochs = 500
-batch_size = 20
+n_epochs = 10
+batch_size = 25
 lr = 0.25
-test_size = 0.15
+test_size = 0.25
 
 
 X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=test_size, random_state=123)
@@ -165,13 +168,29 @@ for epoch in range(n_epochs):
     
     
 
-
-
-
 # =============================================================================
-# # Evaluation / Plotting
+# # Serializing model 
 # =============================================================================
 
+wdir= r'C:/Users/hauer/Documents/Repositories/cfds_project'
+save_dir = os.path.join(wdir, 'pytorch_models')
+model_name = 'rnn.torch'
+
+if(not os.path.isdir(save_dir)):
+    os.mkdir(save_dir)
+    
+save(model.state_dict(), os.path.join(save_dir, model_name))
+
+model = RNN(input_size, seq_len, output_size=output_size, hidden_dim=hidden_dim, n_layers=n_layers)
+model.load_state_dict(load( os.path.join(save_dir, model_name)))
+model.eval()
+
+# =============================================================================
+# # Evaluation / Plotting 
+# =============================================================================
+
+
+# Run RNN with whole df, only selecting the outputs that are wanted for prediction
 X_eval = df.iloc[:,1:].values
 y_eval = df.iloc[:,0].values
 X_eval_T = from_numpy(X_eval).float()
@@ -183,9 +202,14 @@ model.eval()
 with no_grad():
     y_hat = model(X_eval_T, hidden_0)
     
+y_hat =  y_hat.view(-1).numpy()
+y_forecast = y_hat[-len(t_forecast):]
+
+
+    
 from matplotlib import pyplot as plt
 
 x = range(0,len(y_eval))
 plt.plot(x,y_eval)
-plt.plot(x, y_hat.view(-1).numpy())
+plt.plot(x, y_hat)
 plt.show()
