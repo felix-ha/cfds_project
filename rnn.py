@@ -1,41 +1,9 @@
 import numpy as np
 from data_handling import get_synthetic_dataset, preprocess_for_supervised_learning, convert_time_series_to_relative
 import datetime
+from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader, TensorDataset
 
-def generate_subsequences(x, sequence_length):
-    """
-    Given a time series x, returns a prepared data set for a
-    sequence-to-sequence model. 
-    
-    x = (x_0, x_1, ..., x_N) -->
-     
-    x_batch = (x_i+1, x_i+2, ..., x_sequence_length)
-    y_batch = (x_i+2, x_i+3, ..., x_sequence_length+1)
-    
-    returns a tuple X, y with dimensions 
-    [len(x) - sequence_length, sequence_length]
-    
-    """
-
-    X, y = [], []
-    
-    for i in range(len(x)):
-        x_start = i
-        x_end = i+sequence_length     
-       
-        y_start = x_start+1
-        y_end = x_end+1
-        
-        if y_end > len(x):
-            break
-        
-        x_batch = x[x_start:x_end] 
-        y_batch = x[y_start:y_end]
-        
-        X.append(x_batch)
-        y.append(y_batch)
-    
-    return np.stack(X), np.stack(y)
 
 
 # =============================================================================
@@ -44,11 +12,11 @@ def generate_subsequences(x, sequence_length):
 
 df = get_synthetic_dataset()
 df = convert_time_series_to_relative(df)
-#df = preprocess_for_supervised_learning(df)
+df = preprocess_for_supervised_learning(df)
 
 start = df.index[0] 
 end = df.index[-1]
-start_forecast = datetime.datetime(1904, 12, 31)
+start_forecast = datetime.datetime(2000, 12, 31)
 t_train = df.index[df.index < start_forecast]
 t_forecast = df.index[df.index >= start_forecast]
 
@@ -61,20 +29,20 @@ dummy_dim -= 1
 
 
 
-time_steps = 1
+time_steps = 15
 horizon = 1
 sequence_length = time_steps + horizon 
 
 
 max_index = N - sequence_length + 1
 
-X_training = np.empty([max_index, sequence_length,dummy_dim])
-y_training = np.empty([max_index, sequence_length])
+X = np.empty([max_index, sequence_length,dummy_dim])
+y = np.empty([max_index, sequence_length])
 
 for i in range(max_index):
 
-    X_training[i] = df_training.iloc[i:i+sequence_length,1:].values
-    y_training[i] = df_training.iloc[i:i+sequence_length,0].values
+    X[i] = df_training.iloc[i:i+sequence_length,1:].values
+    y[i] = df_training.iloc[i:i+sequence_length,0].values
         
 
     
@@ -83,78 +51,141 @@ for i in range(max_index):
 # =============================================================================
     
     
-from torch import nn
+from torch import nn, no_grad
 from torch import from_numpy, zeros
+from torch.optim import SGD
 
 
-class RNN_debug(nn.Module):
+class RNN(nn.Module):
     def __init__(self, input_size, seq_len, output_size, hidden_dim, n_layers):
-        super(RNN_debug, self).__init__()
+        super(RNN, self).__init__()
 
         self.hidden_dim = hidden_dim
         self.seq_len = seq_len
         
         self.rnn = nn.RNN(input_size, hidden_dim, n_layers)
         self.fc = nn.Linear(hidden_dim, output_size)
-        self.sigmoid = nn.Sigmoid()
 
     def forward(self, x, hidden):
-                # get RNN outputs, hidden is  unused
         r_out, hidden = self.rnn(x, hidden)
-        
-        print("output of rnn cell: ")
-        print(r_out)
-        print("")
-        
-        print(" last hidden state of rnn cell: ")
-        print(hidden)
-        print("")
-        
-       
-        
-        # get final output
         r_out = self.fc(r_out)
         
-        print("fully connected layer: ")
-        print(r_out)
-        print("")
+        return r_out
         
     def initHidden(self):
         return zeros(1, self.seq_len, self.hidden_dim)
     
     
 
-N, seq_len, dummy_dim = X_training.shape
-
-X_T = from_numpy(X_training).float()
-y_T = from_numpy(y_training).float()
-
+N, seq_len, dummy_dim = X.shape
 
 input_size=dummy_dim
-hidden_dim=5
+hidden_dim=10
 n_layers=1
 output_size=1
 
-model = RNN_debug(input_size, seq_len, output_size=output_size, hidden_dim=hidden_dim, n_layers=n_layers)
+n_epochs = 500
+batch_size = 20
+lr = 0.25
+test_size = 0.15
 
 
-hidden = zeros(1, seq_len, hidden_dim)
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=test_size, random_state=123)
 
 
-print("N: ", N)
-print("seq_len: ", seq_len)
-print("dummy_dim: ", dummy_dim)
-print("hidden_dim: ", hidden_dim)
-print("")
 
-print("input to network: ")
-print(X_T)
-print("")
 
-print("initial hidden state")
-print(hidden)
-print("")
+X_train_T = from_numpy(X_train).float()
+y_train_T = from_numpy(y_train).float()
+X_val_T = from_numpy(X_val).float()
+y_val_T = from_numpy(y_val).float()
 
-y = model.forward(X_T, hidden)
+
+
+train_ds = TensorDataset(X_train_T, y_train_T)
+train_dl = DataLoader(train_ds, batch_size=batch_size)  
+
+valid_ds = TensorDataset(X_val_T, y_val_T)
+valid_dl = DataLoader(valid_ds, batch_size=batch_size * 2)
+
+
+
+
+model = RNN(input_size, seq_len, output_size=output_size, hidden_dim=hidden_dim, n_layers=n_layers)
+
+
+hidden_0 = zeros(1, seq_len, hidden_dim)
+training_losses = np.empty(n_epochs)
+valid_losses = np.empty(n_epochs)
+
+loss_func = nn.MSELoss()
+optimizer = SGD(model.parameters(), lr = lr)  
+
+
+
+    
+# =============================================================================
+# # Training loop 
+# =============================================================================
+
+for epoch in range(n_epochs):
+    model.train()
+    training_loss = 0
+    for X_batch, y_batch in train_dl:
+        optimizer.zero_grad()
+        
+        y_pred = model(X_batch, hidden_0)
+        
+        loss = loss_func(y_pred.squeeze(), y_batch)
+        
+        training_loss += loss.item()
+       
+
+        loss.backward()
+        optimizer.step()
+   
+
+    model.eval()
+    valid_loss = 0
+    with no_grad():
+        for X_batch, y_batch in valid_dl:
+            y_pred = model(X_batch, hidden_0)
+            loss = loss_func(y_pred.squeeze(), y_batch.squeeze()) 
+            valid_loss += loss.item()
     
     
+    training_loss_epoch = training_loss * 100
+    valid_loss_epoch = valid_loss * 100
+    
+    training_losses[epoch] = training_loss_epoch
+    valid_losses[epoch] = valid_loss_epoch
+    
+    print('Epoch {}: train loss: {:.4} valid loss: {:.4}'
+          .format(epoch, training_loss_epoch, valid_loss_epoch))   
+    
+    
+
+
+
+
+# =============================================================================
+# # Evaluation / Plotting
+# =============================================================================
+
+X_eval = df.iloc[:,1:].values
+y_eval = df.iloc[:,0].values
+X_eval_T = from_numpy(X_eval).float()
+N, _ = X_eval_T.shape
+X_eval_T = X_eval_T.view([-1, N, dummy_dim])
+
+hidden_0 = zeros(1, N, hidden_dim)
+model.eval()
+with no_grad():
+    y_hat = model(X_eval_T, hidden_0)
+    
+from matplotlib import pyplot as plt
+
+x = range(0,len(y_eval))
+plt.plot(x,y_eval)
+plt.plot(x, y_hat.view(-1).numpy())
+plt.show()
