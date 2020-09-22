@@ -38,10 +38,10 @@ def preprocess_for_supervised_learning(df):
 
 
 def get_synthetic_dataset():
-    t = np.arange(0, 2 * np.pi, step = 0.05)
-    y = 2 * np.sin(t) + 2.5
-    x = 1.5 * np.cos(t) + 2
-    z = np.exp(np.cos(t))
+    t = np.arange(0, 8 * np.pi, step = 0.1)
+    y = 1 * np.sin(t) + 2
+    x = 1 * np.cos(t + 0.1) + 2
+    z = 2 * np.cos(t - 0.5) + 2.2
     
     
     df = pd.DataFrame(data = {'t': t,

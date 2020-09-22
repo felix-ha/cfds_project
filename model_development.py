@@ -54,7 +54,7 @@ df = preprocess_for_supervised_learning(df)
 
 start = df.index[0] 
 end = df.index[-1]
-start_forecast = datetime.datetime(2000, 12, 31)
+start_forecast = datetime.datetime(2070, 12, 31)
 t_train = df.index[df.index < start_forecast]
 t_forecast = df.index[df.index >= start_forecast]
 
@@ -143,7 +143,7 @@ name = 'RNN'
 N, dummy_dim = df_training.shape
 dummy_dim -= 1
 
-time_steps = 15
+time_steps = 25
 horizon = 1
 sequence_length = time_steps + horizon 
 
@@ -195,9 +195,9 @@ hidden_dim=5
 n_layers=1
 output_size=1
 
-n_epochs = 25
-batch_size = 20
-lr = 0.4
+n_epochs = 75
+batch_size = 25
+lr = 0.33
 test_size = 0.0001
 
 
