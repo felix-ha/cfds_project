@@ -373,10 +373,10 @@ ax.axvline(x=start_forecast, ymin=0, ymax=1, color='black',linestyle='--', alpha
 ax.set_xlabel('year') 
 ax.set_ylabel('GDP growth change in %') 
 ax.set_title("GDP growth - real vs. forecast")
-ax.legend()
+legend  = ax.legend(bbox_to_anchor=(1.05, 1))
 fig.autofmt_xdate()
 plt.grid()
 
 
-#plt.savefig('forecast_out_of_time.png', dpi = 400)
-#plt.close()
+plt.savefig('forecast_out_of_time.png', dpi = 500, bbox_extra_artists=(legend,), bbox_inches='tight')
+plt.close()
