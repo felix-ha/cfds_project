@@ -50,27 +50,27 @@ def get_synthetic_dataset():
                               'z': z
                               })
     
-    
-    
-    
-    
-    # creating timestamps as index
-    
-    index = pd.date_range('1900', periods=len(t), freq='Y').to_pydatetime()
-    
-    # higher frequency
-    # pd.date_range('2015-06-30', periods=8, freq='6M')
-    
-    # setting timestamp as index and dropping column t
-    df = df.set_index(index)
+
     del df['t']
   
     return df
 
+
+def transform_index_to_datetime(df):
+    index = pd.date_range('1900', periods=len(df), freq='Y').to_pydatetime()
+    
+       
+    # higher frequency
+    # pd.date_range('2015-06-30', periods=8, freq='6M')
+    
+    
+    df = df.set_index(index)
+    return df
     
     
 if __name__ == '__main__':
     df = get_synthetic_dataset()
+    df = transform_index_to_datetime(df)
     df = convert_time_series_to_relative(df)
     df = preprocess_for_supervised_learning(df)
     
