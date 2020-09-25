@@ -22,8 +22,9 @@ import matplotlib.pyplot as plt
 plt.style.use('seaborn-dark')
 
 
-from data_handling import get_synthetic_dataset, preprocess_for_supervised_learning, convert_time_series_to_relative
+from data_handling import get_synthetic_dataset, preprocess_for_supervised_learning, convert_time_series_to_relative, transform_index_to_datetime
 
+from gao_data import get_PairSampleDf
 
 def forecast(model, df_training, df_prediction):
     # Trains the model with df_training and performs
@@ -48,13 +49,19 @@ def forecast(model, df_training, df_prediction):
 # # Get, preprocess and split data 
 # =============================================================================
 
-df = get_synthetic_dataset()
+# Synthetic dummy data set
+#df = get_synthetic_dataset()
+
+# Data from goa
+df = get_PairSampleDf()  
+
+df = transform_index_to_datetime(df)
 df = convert_time_series_to_relative(df)
 df = preprocess_for_supervised_learning(df)
 
 start = df.index[0] 
 end = df.index[-1]
-start_forecast = datetime.datetime(2070, 12, 31)
+start_forecast = datetime.datetime(2040, 12, 31)
 t_train = df.index[df.index < start_forecast]
 t_forecast = df.index[df.index >= start_forecast]
 
@@ -378,5 +385,5 @@ fig.autofmt_xdate()
 plt.grid()
 
 
-plt.savefig('forecast_out_of_time.png', dpi = 500, bbox_extra_artists=(legend,), bbox_inches='tight')
-plt.close()
+#plt.savefig('forecast_out_of_time.png', dpi = 500, bbox_extra_artists=(legend,), bbox_inches='tight')
+#plt.close()
