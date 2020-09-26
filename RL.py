@@ -163,15 +163,22 @@ if __name__ == '__main__':
     observation = env.reset()
     #for t in range(100):
     done = False
+    t = 0
+    score = 0
     while not done: 
         env.render()
         action_vector = agent.Q_eval(T.tensor(observation, dtype=T.float32)).detach().numpy()
         action = np.argmax(action_vector)
     
         observation, reward, done, info = env.step(action)
+        
+        
         if done:
-            #print("Episode finished after {} timesteps".format(t+1))
+            print("Episode finished after {} timesteps with score {}".format(t+1, score))
             break
+        
+        t += 1
+        score += reward
     
     env.close()
         
