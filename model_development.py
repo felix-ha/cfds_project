@@ -53,7 +53,7 @@ def forecast(model, df_training, df_prediction):
 #df = get_synthetic_dataset()
 
 # Data from goa
-df = get_PairSampleDf()  
+df = get_PairSampleDf(180)  
 
 df = transform_index_to_datetime(df)
 df = convert_time_series_to_relative(df)

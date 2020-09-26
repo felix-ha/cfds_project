@@ -280,15 +280,15 @@ def test_SinSampler():
 	#sampler.build_db(n_episodes, fld)
         
         
-def get_PairSampleDf():
+def get_PairSampleDf(size_time_series):
 	fhr = (10,30)
 	n_section = 1
 	max_change_perc = 30.
 	noise_level = 5
-	game = 'randjump'
+	game = 'randwalk'
 	windows_transform = []
 
-	sampler = PairSampler(game, window_episode=180, forecast_horizon_range=fhr, 
+	sampler = PairSampler(game, window_episode=size_time_series, forecast_horizon_range=fhr, 
 		n_section=n_section, noise_level=noise_level, max_change_perc=max_change_perc, windows_transform=windows_transform)   
     
 	x = sampler.sample()[0]  
@@ -303,7 +303,8 @@ def get_PairSampleDf():
 if __name__ == '__main__':
 	#scan_match()
 	#test_SinSampler()
-	df = get_PairSampleDf()    
+	size_time_series = 180
+	df = get_PairSampleDf(size_time_series)    
     
 
 	#p = [1,2,3,2,1,2,3]
