@@ -6,6 +6,9 @@ import torch.nn.functional as F
 import torch.optim as optim
 import gym
 
+import matplotlib.pyplot as plt
+plt.style.use('seaborn-dark')
+
 
 class DeepQNetwork(nn.Module):
     def __init__(self, lr, input_dims, fc1_dims, fc2_dims, 
@@ -130,11 +133,19 @@ class Environment():
         self.current_game = 0
         self.t_current = 0
         self.empty = True
-        self.open_cost = 3.3
+        self.open_cost = 0
         
         self.list_of_games = self.get_list_of_games()
         self.t_max = self.size_time_series - self.window_size_observation - 1
+
       
+    def get_status_emtpy(self):
+        return self.empty
+
+    
+    def get_current_df(self):
+        return self.list_of_games[self.current_game]
+
         
     def get_list_of_games(self):
         list_of_games = []
@@ -221,18 +232,30 @@ class Environment():
 
     
 
-
+def get_prediction(action, empty_status):
+    # Determines prediction on a given empty_status and action
+    # if empty, i. e. no stock is in depot, if action == 1 (buying) you bet on rising price
+    # if not empty, i. e. stock is in depot, if action == 0 (selling) you bet on falling price
+    
+    if empty_status:
+        if action == 1:
+            return 1
+        return -1
+    else:
+        if action == 0:
+            return -1
+        return 1
     
     
     
 if __name__ == '__main__':
-    n_games = 350
+    n_games = 250
     window_size_observation = 40
     size_time_series = 180
     
     
-    agent = Agent(gamma=0.99, epsilon=1, batch_size=64, n_actions=3, eps_end=0.01, 
-                  input_dims=[window_size_observation], lr=0.001, eps_dec=3e-5)
+    agent = Agent(gamma=0.8, epsilon=1, batch_size=64, n_actions=3, eps_end=0.01, 
+                  input_dims=[window_size_observation], lr=0.001, eps_dec=1e-4)
     
     env = Environment(n_games, window_size_observation, size_time_series)
     
@@ -276,11 +299,11 @@ if __name__ == '__main__':
 # =============================================================================
 #     # Evaluation 
 # =============================================================================
-    n_games = 100
+    n_games = 1
     env = Environment(n_games, window_size_observation, size_time_series)
     agent.epsilon = 0
     
-    scores, eps_history = [], []
+    actions, empty_status, rewards = [], [], []
 
     for i in range(n_games):
         score = 0
@@ -301,18 +324,45 @@ if __name__ == '__main__':
             observation_ = observation_.iloc[:, 1:].values.squeeze()
             
             score += reward
-
             observation = observation_
+            
+            
+            empty_status.append(env.get_status_emtpy())
+            actions.append(action)
+            rewards.append(reward)
+            
+
+    
+        df = env.get_current_df()
+        predictions = [get_prediction(action, empty_status) for action, empty in zip(actions, empty_status)]
         
-        scores.append(score)
-        eps_history.append(agent.epsilon)
-
-        avg_score = np.mean(scores[-100:])
-
-    print('episode ', i, 'score %.2f' % score,
-            'average score %.2f' % avg_score,
-            'epsilon %.2f' % agent.epsilon)            
-
+        predictions = [0 for i in range(window_size_observation)] + predictions
+        rewards = [0 for i in range(window_size_observation)] + rewards
+        actions = [0 for i in range(window_size_observation)] + actions
+        
+     
        
+        
+               
+        fig, (ax, ax2) = plt.subplots(2, 1, sharex=True)
+
+    
+        ax.plot(df['y'], label='price')
+        ax.axvline(x=window_size_observation, ymin=-100, ymax=500, color='black',linestyle='--', alpha=1)
+        ax.grid()
+        ax.set_ylabel('price') 
+        ax.set_title("Price and predictions")
+        
+        
+            
+        ax2.plot(actions, 'ro-')
+        ax2.set_xlabel('t') 
+        ax2.set_ylabel('predictions') 
+        
+        
+        
+        plt.grid()
+           
+        plt.show()
 
     
