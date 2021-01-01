@@ -55,16 +55,13 @@ def get_synthetic_dataset():
   
     return df
 
-
-def transform_index_to_datetime(df):
-    index = pd.date_range('1900', periods=len(df), freq='Y').to_pydatetime()
-    
-       
     # higher frequency
     # pd.date_range('2015-06-30', periods=8, freq='6M')
-    
-    
+def transform_index_to_datetime(df):
+
+    index = pd.date_range('1900', periods=len(df), freq='Y').to_pydatetime()   
     df = df.set_index(index)
+    
     return df
     
     
