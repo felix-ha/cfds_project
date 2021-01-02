@@ -1,7 +1,42 @@
 import numpy as np
 import pandas as pd
 
+
+def get_predictions_weo(df_weo, country, start_forecast, end_forecast):
+       
+    df = df_weo[df_weo['country'] == country]
     
+    
+    for col in df.columns:
+        if 'S' in col:
+            del df[col] 
+            
+    del df['WEO_Country_Code']     
+    
+    
+    df = df[df['year'] >= start_forecast]
+    
+    
+    predictions_weo = []
+    years = np.arange(start_forecast, end_forecast+1, 1)
+    
+    for year in years:
+       
+        df_curr = df[df['year'] == year]
+        
+        year_WEO = year - 1 
+        column = 'F' + str(year_WEO) + 'ngdp_rpch'
+        y_pred_year = df_curr[column].values[0]
+        
+        predictions_weo.append(y_pred_year)
+    
+    predictions_weo = pd.Series(data = predictions_weo, index = years)
+    
+    return predictions_weo
+
+
+
+# Not used method atm    
 
 def convert_time_series_to_relative(df):
     # Assings each t the Values of ln(X_t / X_(t-1))
@@ -66,10 +101,19 @@ def transform_index_to_datetime(df):
     
     
 if __name__ == '__main__':
-    df = get_synthetic_dataset()
-    df = transform_index_to_datetime(df)
-    df = convert_time_series_to_relative(df)
-    df = preprocess_for_supervised_learning(df)
+    path = r'C:\Users\hauer\Dropbox\CFDS\Project\data\WEOhistorical.xlsx'
+    df_weo =  pd.read_excel(path,sheet_name='ngdp_rpch')
+    df_result = get_predictions_weo(df_weo, 'Germany', 2010, 2018)
+    df_weo['country'].unique()
+    
+    
+    
+    
+    
+   # df = get_synthetic_dataset()
+   # df = transform_index_to_datetime(df)
+   # df = convert_time_series_to_relative(df)
+   # df = preprocess_for_supervised_learning(df)
     
     
     
