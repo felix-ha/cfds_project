@@ -34,6 +34,34 @@ def get_predictions_weo(df_weo, country, start_forecast, end_forecast):
     
     return predictions_weo
 
+def get_imf_woe_data(df_weo_real_gdp, country, remove_na=False):
+
+    df = df_weo_real_gdp[df_weo_real_gdp['Country'] == country]
+    
+    result = pd.DataFrame()
+    
+    available_variables = df['Subject Descriptor'].unique()
+    
+    for variable in available_variables:
+        df_curr = df[df['Subject Descriptor'] == variable]
+        df_curr = df_curr.iloc[:, 9:49]
+        df_curr = df_curr.transpose()
+        df_curr = df_curr.rename({df_curr.columns[0]: variable}, axis='columns')
+        result = pd.concat([result, df_curr], axis=1)
+        
+        
+    if remove_na:
+        result = result.dropna(axis=1) 
+        
+    return result
+
+
+def get_gdp_real(df_weo_real_gdp, country):
+    df = get_imf_woe_data(df_weo_real_gdp, country, remove_na=False)
+    df.index = df.index.astype(dtype='int64')   
+    df['Y'] = df['Gross domestic product, constant prices']  
+    df['Y'] = df['Y'].str.replace(',', '').astype('float')
+    return df['Y']
 
 
 # Not used method atm    
@@ -100,11 +128,11 @@ def transform_index_to_datetime(df):
     return df
     
     
-if __name__ == '__main__':
-    path = r'C:\Users\hauer\Dropbox\CFDS\Project\data\WEOhistorical.xlsx'
-    df_weo =  pd.read_excel(path,sheet_name='ngdp_rpch')
-    df_result = get_predictions_weo(df_weo, 'Germany', 2010, 2018)
-    df_weo['country'].unique()
+#if __name__ == '__main__':
+    #path = r'C:\Users\hauer\Dropbox\CFDS\Project\data\WEOhistorical.xlsx'
+    #df_weo =  pd.read_excel(path,sheet_name='ngdp_rpch')
+    #df_result = get_predictions_weo(df_weo, 'Germany', 2010, 2018)
+    #df_weo['country'].unique()
     
     
     
