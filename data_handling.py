@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import os
 
 
 def get_predictions_weo(df_weo, country, start_forecast, end_forecast):
@@ -59,9 +60,50 @@ def get_imf_woe_data(df_weo_real_gdp, country, remove_na=False):
 def get_gdp_real(df_weo_real_gdp, country):
     df = get_imf_woe_data(df_weo_real_gdp, country, remove_na=False)
     df.index = df.index.astype(dtype='int64')   
-    df['Y'] = df['Gross domestic product, constant prices']  
-    df['Y'] = df['Y'].str.replace(',', '').astype('float')
-    return df['Y']
+    df['GDP real'] = df['Gross domestic product, constant prices']  
+    df['GDP real'] = df['GDP real'].str.replace(',', '').astype('float')
+    return df['GDP real']
+
+
+
+def get_oecd_data(path_oecd, country): 
+ 
+    result = pd.DataFrame()
+  
+    
+    for file_name in os.listdir(path_oecd):
+    
+        
+        file = os.path.join(path_oecd, file_name)
+        
+        df_orig = pd.read_csv(file)
+        unique_subjects = df_orig['SUBJECT'].unique()
+    
+        
+        for subject in unique_subjects:
+            
+            
+            df = df_orig.copy()
+            df = df[df['LOCATION'] == country] 
+            df = df[df['SUBJECT'] == subject]
+            
+            # if there is only one unique subject, the name is TOT
+            if(len(unique_subjects) == 1):
+                subject = file_name[:-4]
+            
+            
+            df = df.rename({df.columns[6]: subject}, axis='columns')
+            
+            df = df.set_index('TIME')
+            
+            result = pd.concat([result, df[subject]], axis=1)
+        
+        
+   # result = result[result.index >= start]
+   # result = result[result.index <= end]
+   # result = result.dropna(axis=1)
+    
+    return result
 
 
 # Not used method atm    
@@ -128,7 +170,14 @@ def transform_index_to_datetime(df):
     return df
     
     
-#if __name__ == '__main__':
+if __name__ == '__main__':
+    
+        path_oecd = r'C:\Users\hauer\Dropbox\CFDS\Project\data\OECD'
+        
+        df_oecd = get_oecd_data(path_oecd, 'DEU')
+
+
+
     #path = r'C:\Users\hauer\Dropbox\CFDS\Project\data\WEOhistorical.xlsx'
     #df_weo =  pd.read_excel(path,sheet_name='ngdp_rpch')
     #df_result = get_predictions_weo(df_weo, 'Germany', 2010, 2018)
