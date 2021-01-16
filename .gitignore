@@ -1,2 +1,16 @@
 *.pyc
 *.ipynb_checkpoints
+
+*.aux
+*.log
+*.nav
+*.out
+*.pdf
+*.snm
+*.gz
+*.toc
+
+*.png
+*.pickle
+*.json
+*.torch
