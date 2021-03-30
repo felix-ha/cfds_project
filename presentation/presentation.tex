@@ -36,7 +36,7 @@
 }
 
 
-\frame{\frametitle{Supervised Learning for Time Series}
+\frame{\frametitle{Preparation of the Data}
  \begin{itemize}
  \item Using the framework of supervised learning to work with time series. This approach is used in (Reference to Crystal-Ball)
  \item The orignal data is given in the form $(x_t, y_t)$, $t = 1 ... N$
@@ -60,6 +60,50 @@ asdf
 subsection
 }
 
+
+\subsection{Models}
+\frame{\frametitle{World Economic Outlook } 
+\begin{itemize}
+\item The International Monetary Fund publishes predictions of the GDP growth in its World Economic Outlook (WEO)
+\item The IMF publishes the WEO twice a year in spring and in fall
+\item I will use the prediction of the fall, as this closer to the next year and therefore the prediction should be more precise
+\end{itemize}
+
+}
+
+\frame{\frametitle{Linear Model} 
+
+\begin{itemize}
+\item The ordinary least squares regression is the most famous and basic model in econometrics. It has the following form: 
+\item \begin{equation*}
+y = x_1\beta_1 + x_2\beta_2 + ... x_N\beta_N + \beta_{N+1}
+\end{equation*}
+\end{itemize}
+
+}
+
+\frame{\frametitle{Gradient Booster} 
+\begin{itemize}
+\item Currentlty the best "from the shelf" models for tabular data. 
+\item Ensemble of the from \begin{equation*}
+f(x) = \sum_{i = 1}^N f_i(x)
+\end{equation*} where $f_i$ are weak learners, most of the time tree based models. 
+\item Are called gradient booster because of the way the model is trained. 
+\item Famous implementations: Xgboost, light bgm, cat boost. 
+\end{itemize}
+}
+
+
+
+\frame{\frametitle{ARIMA} 
+\begin{itemize}
+\item The autoregressive integrated moving average ARIMA($p$, $d$, $q$) model is used in time series analysis. 
+\item $X_t - \alpha_1X_{t-1} - ... - \alpha_pX_{t-p} =  \epsilon_t + \theta_1\epsilon_{t-1} + ... + \theta_q\epsilon_{t-q}$ 
+\item Here $\alpha _{i}$ are the parameters of the autoregressive part of the model, $\theta _{i}$ are the parameters of the moving average part, $d$ is the degree of differencing and $\epsilon _{t}$ are error terms.  
+\item There is an implementaion in python in the pmdarima package, which automatically discovers the optimal order for an ARIMA model with exogenous variables. 
+
+\end{itemize}
+}
 
 
 \section{Section no. 2} 
