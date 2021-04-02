@@ -11,10 +11,8 @@
 
 
 
-\section{Slides that i need} 
-
-
-
+\section{Data} 
+\subsection{Sources and EDA}
 \frame{\frametitle{Data sources}
 
 }
@@ -23,10 +21,12 @@
 
 }
 
+\subsection{Split of the data set}
 \frame{\frametitle{Split of the data set}
  
 }
 
+\subsection{Missing Values}
 \frame{\frametitle{Filitering missing values}
 
 }
@@ -51,37 +51,42 @@
 
 
 
-\section{Intro} 
-\frame{\frametitle{Title} 
-asdf
-}
-\subsection{subsection1}
-\frame{\frametitle{Title} 
-subsection
-}
+\section{Models} 
 
-
-\subsection{Models}
+\subsection{World Economic Outlook}
 \frame{\frametitle{World Economic Outlook } 
 \begin{itemize}
 \item The International Monetary Fund publishes predictions of the GDP growth in its World Economic Outlook (WEO)
 \item The IMF publishes the WEO twice a year in spring and in fall
 \item I will use the prediction of the fall, as this closer to the next year and therefore the prediction should be more precise
 \end{itemize}
-
 }
 
-\frame{\frametitle{Linear Model} 
 
+\subsection{Linear Model}
+\frame{\frametitle{Linear Model} 
 \begin{itemize}
 \item The ordinary least squares regression is the most famous and basic model in econometrics. It has the following form: 
 \item \begin{equation*}
 y = x_1\beta_1 + x_2\beta_2 + ... x_N\beta_N + \beta_{N+1}
 \end{equation*}
 \end{itemize}
-
 }
 
+
+
+\subsection{ARIMA}
+\frame{\frametitle{ARIMA} 
+\begin{itemize}
+\item The autoregressive integrated moving average ARIMA($p$, $d$, $q$) model is used in time series analysis. 
+\item $X_t - \alpha_1X_{t-1} - ... - \alpha_pX_{t-p} =  \epsilon_t + \theta_1\epsilon_{t-1} + ... + \theta_q\epsilon_{t-q}$ 
+\item Here $\alpha _{i}$ are the parameters of the autoregressive part of the model, $\theta _{i}$ are the parameters of the moving average part, $d$ is the degree of differencing and $\epsilon _{t}$ are error terms.  
+\item There is an implementaion in python in the pmdarima package, which automatically discovers the optimal order for an ARIMA model with exogenous variables. 
+\end{itemize}
+}
+
+
+\subsection{Gradient Booster}
 \frame{\frametitle{Gradient Booster} 
 \begin{itemize}
 \item Currentlty the best "from the shelf" models for tabular data. 
@@ -95,33 +100,69 @@ f(x) = \sum_{i = 1}^N f_i(x)
 
 
 
-\frame{\frametitle{ARIMA} 
-\begin{itemize}
-\item The autoregressive integrated moving average ARIMA($p$, $d$, $q$) model is used in time series analysis. 
-\item $X_t - \alpha_1X_{t-1} - ... - \alpha_pX_{t-p} =  \epsilon_t + \theta_1\epsilon_{t-1} + ... + \theta_q\epsilon_{t-q}$ 
-\item Here $\alpha _{i}$ are the parameters of the autoregressive part of the model, $\theta _{i}$ are the parameters of the moving average part, $d$ is the degree of differencing and $\epsilon _{t}$ are error terms.  
-\item There is an implementaion in python in the pmdarima package, which automatically discovers the optimal order for an ARIMA model with exogenous variables. 
-
-\end{itemize}
-}
-
-
-\section{Section no. 2} 
-\subsection{Lists I}
-\frame{\frametitle{Subsection over several slides I}
-
-}
-
-\frame{\frametitle{Subsection over several slides II}
- 
-}
-
-\subsection{Lists II}
-\frame{\frametitle{Subsection over several slides I}
-dg
-}
-\frame{\frametitle{Subsection over several slides II}
+\subsection{RNN}
+\frame{\frametitle{RNN} 
 asdf
 }
+
+\subsection{Deep RL I}
+\frame{\frametitle{Deep RL I} 
+asdf
+}
+
+\subsection{Deep RL II}
+\frame{\frametitle{Deep RL II} 
+asdf
+}
+
+
+
+
+\section{Results} 
+\subsection{Training on single countries}
+\frame{\frametitle{Results - Training on single countries}
+Tabelle hier
+}
+
+\frame{\frametitle{Results - Training on single countries} 
+\begin{figure}[htbp] 
+\centering
+\includegraphics[scale=0.65]{Germany.png}   
+      % \caption{Simulationsumgebung RoboDK.}
+\end{figure}
+}
+
+
+\subsection{Training on whole dataset countries}
+\frame{\frametitle{Results - Training on single countries}
+Tabelle hier
+}
+
+\frame{\frametitle{Results - Training on single countries} 
+\begin{figure}[htbp] 
+\centering
+\includegraphics[scale=0.65]{Germany.png}   
+      % \caption{Simulationsumgebung RoboDK.}
+\end{figure}
+}
+
+
+\subsection{Comparision with Reinforcement Learning}
+\frame{\frametitle{Results - Training on single countries}
+Tabelle hier
+}
+
+\frame{\frametitle{Results - Training on single countries} 
+\begin{figure}[htbp] 
+\centering
+\includegraphics[scale=0.65]{Germany.png}   
+      % \caption{Simulationsumgebung RoboDK.}
+\end{figure}
+}
+
+
+
+
+
 
 \end{document}
