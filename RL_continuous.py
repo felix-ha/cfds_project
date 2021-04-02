@@ -2,13 +2,13 @@ import gym
 
 env = gym.make('MountainCarContinuous-v0')
 env.reset()
-for _ in range(10):
+for _ in range(2):
     env.render()
     
     action = env.action_space.sample()
-    print(action)
+    print('action: ', action)
     
     observation, reward, done, info = env.step(action) # take a random action
     
-    print(observation)
+    print('observation: ', observation)
 env.close()
