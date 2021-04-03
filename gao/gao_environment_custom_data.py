@@ -4,7 +4,7 @@ import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-import gym
+
 
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-dark')
@@ -249,8 +249,8 @@ def get_prediction(action, empty_status):
     
     
 if __name__ == '__main__':
-    n_games = 250
-    window_size_observation = 40
+    n_games = 2
+    window_size_observation = 10
     size_time_series = 180
     
     
@@ -314,6 +314,9 @@ if __name__ == '__main__':
         
         # take only signal as observation for now: 
         observation = observation.iloc[:, 1:].values.squeeze()
+        print(observation.shape)
+        
+        quit()
         
         while not done:
             action = agent.choose_action(observation, valid_actions)
