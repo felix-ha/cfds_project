@@ -1,0 +1,267 @@
+
+\documentclass{beamer}
+
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+
+
+\begin{document}
+\title{CFDS06 Project}   
+\author{Felix Jobson} 
+\date{\today} 
+
+\frame{\titlepage} 
+
+\frame{\frametitle{Table of contents}\tableofcontents} 
+
+
+
+
+\section{Motivation} 
+\frame{\frametitle{Motivation}
+Evtl raus oder Proposal 
+}
+
+
+
+\section{Problem Description} 
+\frame{\frametitle{Problem Description}
+Siehe Proposal
+}
+
+
+\section{Data} 
+\subsection{Sources and EDA}
+\frame{\frametitle{Data sources}
+\begin{itemize}
+\item Quellen
+\item Zeitraum
+\item Welche Faktoren, Anzahl und Beispiele
+\end{itemize}
+
+}
+
+
+
+\subsection{Missing Values}
+\frame{\frametitle{Transforming to Growth Rates}
+siehe Notebook
+}
+
+
+
+
+\frame{\frametitle{Preparation of the Data}
+ \begin{itemize}
+ \item Using the framework of supervised learning to work with time series. This approach is used in (Reference to Crystal-Ball)
+ \item The orignal data is given in the form $(x_t, y_t)$, $t = 1 ... N$
+ \item For every time step the outcome $y$ is mapped to predictor variables $x$ that are preceeding:  \begin{equation*}
+ (x_{t-1}, y_t), ~ t = 2 ... N
+ \end{equation*}
+ \item Hence a model for supervised learning can be trained and used for prediction. 
+ \end{itemize}
+}
+
+
+\frame{\frametitle{Impute missing values}
+ 
+}
+
+
+\section{Approach} 
+
+\subsection{Models}
+
+
+\frame{\frametitle{World Economic Outlook } 
+\begin{itemize}
+\item The International Monetary Fund publishes predictions of the GDP growth in its World Economic Outlook (WEO)
+\item The IMF publishes the WEO twice a year in spring and in fall.
+\item The prediction from the fall is used, as this  iscloser to the next year and therefore the prediction is more precise.
+\end{itemize}
+}
+
+
+
+\frame{\frametitle{Classic Models} 
+\begin{itemize}
+\item Ordinary Least Squares
+\begin{itemize}
+\item The OLS regression is the most famous and basic model in econometrics. It has the following form: 
+\begin{equation*}
+y = x_1\beta_1 + x_2\beta_2 + ... x_N\beta_N + \beta_{N+1}
+\end{equation*}
+\end{itemize}
+
+
+
+\item Autoregressive Integrated Moving Average
+\begin{itemize}
+\item The autoregressive integrated moving average ARIMA($p$, $d$, $q$) model is used in time series analysis. 
+\item $X_t - \alpha_1X_{t-1} - ... - \alpha_pX_{t-p} =  \epsilon_t + \theta_1\epsilon_{t-1} + ... + \theta_q\epsilon_{t-q}$ 
+\item Here $\alpha _{i}$ are the parameters of the autoregressive part of the model, $\theta _{i}$ are the parameters of the moving average part, $d$ is the degree of differencing and $\epsilon _{t}$ are error terms.  
+\end{itemize}
+
+\end{itemize}
+}
+
+
+
+\frame{\frametitle{Machine Learning Models I} 
+\begin{itemize}
+\item Least Absolute Shrinkage and Selection Operator
+\begin{itemize}
+\item The LASSO is a penalized version of the OLS: 
+\begin{equation*}
+\min_{\beta} { ||X \beta - y||_2 ^ 2 + \alpha ||\beta||_1 }
+\end{equation*}
+\end{itemize}
+
+
+
+\item Support Vector Regression
+\begin{itemize}
+\item The SVR is an adapted version of a SVM for regression problems and tries to solve the optimization problem: 
+  \begin{equation*}
+\min_{\beta} { \frac{1}{2} || \beta ||_2 ^ 2 } \text{, subject to  } || X \beta - y || < \varepsilon
+\end{equation*}
+\end{itemize}
+
+\end{itemize}
+}
+
+
+
+\frame{\frametitle{Machine Learning Models II} 
+\begin{itemize}
+\item Regression Tree
+\begin{itemize}
+
+\item Binary tree that groups data with similar vaules into the same leaf. 
+\item This is done to minimize the overall loss: 
+\begin{equation*}
+L(...
+\end{equation*}
+
+
+%\item A regression tree is a rule based model.
+%\item Based on a binary tree. 
+
+
+
+\end{itemize}
+
+
+
+\item Gradient Booster
+\begin{itemize}
+\item Ensemble of the from \begin{equation*}
+f(x) = \sum_{i = 1}^N f_i(x)
+\end{equation*} where $f_i$ are weak learners, most of the time tree based models. 
+\item Are called gradient booster because of the way the model is trained.
+\end{itemize}
+
+
+\end{itemize}
+}
+
+
+
+
+
+
+
+\frame{\frametitle{Deep Learning} 
+
+
+\begin{itemize}
+\item  Reccurent Neural Network
+
+
+\begin{itemize}
+\item A RNN is a deep neural network that is designed to handle sequential data. 
+\item A RNN cell is defined as:
+\begin{equation*}
+h_t = \sigma(W_{ih} x_t + b_{ih} + W_{hh} h_{(t-1)} + b_{hh})
+\end{equation*}
+\item There are also more sophisticated approched like the LSTM (Long short-term memory). 
+\end{itemize}
+\end{itemize}
+
+
+}
+
+
+
+
+
+\subsection{Training}
+\frame{\frametitle{Training} 
+Notebook. 
+}
+
+
+\subsection{Evaluation}
+\frame{\frametitle{Evaluation} 
+Noch Schreiben. Erkärung des signifikanz tests
+}
+
+
+
+\section{Results} 
+\subsection{Training on single countries}
+\frame{\frametitle{Results - Training on single countries}
+Tabelle hier
+}
+
+\frame{\frametitle{Results - Training on single countries} 
+\begin{figure}[htbp] 
+\centering
+\includegraphics[scale=0.65]{Germany.png}   
+      % \caption{Simulationsumgebung RoboDK.}
+\end{figure}
+}
+
+
+\subsection{Training on whole dataset countries}
+\frame{\frametitle{Results - Training on single countries}
+Tabelle hier
+}
+
+\frame{\frametitle{Results - Training on single countries} 
+\begin{figure}[htbp] 
+\centering
+\includegraphics[scale=0.65]{Germany.png}   
+      % \caption{Simulationsumgebung RoboDK.}
+\end{figure}
+}
+
+
+\subsection{Test for statistical significance}
+\frame{\frametitle{Test for statistical significance}
+\begin{figure}[htbp] 
+\centering
+\includegraphics[scale=0.65]{result.png}   
+      % \caption{Simulationsumgebung RoboDK.}
+\end{figure}
+}
+
+
+
+\section{Conclusion} 
+\frame{\frametitle{Conclusion}
+
+}
+
+
+
+\end{document}
