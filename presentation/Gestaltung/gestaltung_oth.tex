@@ -1,0 +1,85 @@
+\setbeamercolor{frametitle}{fg=black}
+
+
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+\setbeamercolor{itemize item}{bg=gray, fg=gray} 
+\setbeamercolor{itemize subitem}{fg=gray}
+\setbeamercolor{section in toc}{fg=gray}
+\setbeamercolor{subsection in toc shaded}{fg=gray}
+\setbeamercolor{title}{fg=black}
+
+\setbeamercolor{section in head/foot}{fg=white, bg=black}
+
+%\setbeamertemplate{frametitle}
+%{
+%\includegraphics[width=3cm]{Gestaltung/oth_logo.png}\hfill
+%%\parbox{0.6\textwidth}{\color{black}
+%%\vspace*{-1cm}{
+%\insertframetitle
+%%}
+%%}
+%\hspace*{-0.3cm}\color{black}\rule{20cm}{0.2mm}
+%}
+
+\setbeamertemplate{frametitle}
+{% 
+%\vspace{-0.165ex} 
+\begin{beamercolorbox}[wd=\paperwidth,dp=1ex, ht=7ex, sep=0.5ex, colsep*=0pt]{section in head/foot}% 
+    \usebeamerfont{frametitle}   \strut 
+    \raisebox{-0.55ex}[0pt][-\ht\strutbox ]{
+        \includegraphics[width=3.5cm]{Gestaltung/cfds_logo.png}
+    	}  
+    \hfill  \insertframetitle \hspace{0.4cm}
+    \end{beamercolorbox}
+    \vspace*{-0.5cm}
+    \hspace*{-2cm}
+\color{black}\rule{15cm}{0.2mm}               
+}%
+
+
+%\setbeamertemplate{headline}{
+%\begin{beamercolorbox}{frametitle}
+
+
+%\begin{flushright}
+
+%\end{flushright}
+%}} 
+%\end{beamercolorbox}%
+
+%}
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \vspace*{0.2cm}
+     \hspace*{-2cm}
+	\color{black}\rule{15cm}{0.2mm}   
+  \hbox{%
+  \begin{beamercolorbox}[wd=1.15\paperwidth,ht=1.5ex,dp=1ex, center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\color{black}\insertshortauthor \hfill
+CFDS \hfill    Slide \insertframenumber /\inserttotalframenumber
+\vspace*{0.02cm}
+  \end{beamercolorbox}}%
+}
+
+\setbeamerfont{tiny structure}{size=\tiny}
+
+
+\defbeamertemplate*{title page}{customized}[1][]
+{
+\begin{minipage}{0.8\linewidth}
+  \usebeamerfont{title}\inserttitle\par
+  \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par
+  \bigskip
+  \usebeamerfont{author}\insertauthor\par
+  \usebeamerfont{institute}\insertinstitute\par
+  \usebeamerfont{date}\insertdate\par
+  %\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic
+\end{minipage} \hfill
+\begin{minipage}{0.15\linewidth}
+  \vspace*{0pt}
+  \usebeamercolor[fg]{titlegraphic}\inserttitlegraphic
+\end{minipage}
+  
+  
+}

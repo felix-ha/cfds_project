@@ -1,43 +1,92 @@
 
 \documentclass{beamer}
 
-\AtBeginSection[]{
-  \begin{frame}
-  \vfill
-  \centering
-  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
-    \usebeamerfont{title}\insertsectionhead\par%
-  \end{beamercolorbox}
-  \vfill
-  \end{frame}
-}
+%\usetheme{default}
+
+
+\input{Gestaltung/gestaltung_oth}
+
+%\AtBeginSection[]{
+%  \begin{frame}
+%  \vfill
+  
+  
+  
+%  \includegraphics[width=3.5cm]{Gestaltung/cfds_logo.png}  
+  
+%  \centering
+%  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+%    \usebeamerfont{title}\insertsectionhead\par%
+%  \end{beamercolorbox}
+%  \vfill
+%  \end{frame}
+%}
 
 
 
 \begin{document}
-\title{CFDS06 Project 
 
-\ \\
 
- Macroeconomic forecasting: Can machine learning methods outperform traditional approaches?}   
-\author{Felix Jobson} 
-\date{\today} 
 
-\frame{\titlepage} 
+
+%\title{
+
+%CFDS06 Project
+
+
+%\ \\
+
+% Macroeconomic forecasting: Can machine learning methods outperform traditional approaches?}   
+%\author{Felix Jobson} 
+%\date{\today} 
+
+
+%%\titlegraphic{\includegraphics[width=3.5cm]{Gestaltung/cfds_logo.png}}
+%%\institute{asdf}
+
+
+%\frame{\titlepage} 
+
+
+
+
+
+
+
+
+\title{\textbf{Macroeconomic forecasting: Can machine learning methods outperform traditional approaches?}}
+\subtitle{\ \\CFDS06 Project}
+%\institute{Fakultät für Informatik und Mathematik\\ OTH Regensburg}
+
+\author{Felix Jobson
+\ \\}
+%\date{\ \\11. April 2019} 
+\date{\today}
+%\begin{document} 
+\begin{frame}
+\frametitle{~}
+\maketitle 
+\end{frame}
+
+
+
+
+
+
+
+
 
 \frame{\frametitle{Table of contents}\tableofcontents} 
 
 
+\section{Problem Description} 
+\frame{\frametitle{~}
 
+\centering \huge Problem Description
 
-\section{Motivation} 
-\frame{\frametitle{Motivation}
-Evtl raus oder Proposal 
 }
 
-
-
-\section{Problem Description} 
+ 
 \frame{\frametitle{Problem Description}
 \begin{itemize}
 \item The research question of the project is the capability of machine learning models to predict the growth of an economy and compare the result with traditional methods of forecasting.
@@ -58,6 +107,14 @@ macroeconomic factors.
 }
 
 \section{Data} 
+\frame{\frametitle{~}
+
+\centering \huge  Data
+
+}
+
+
+
 \subsection{Sources and Overview}
 \frame{\frametitle{Data sources}
 \begin{itemize}
@@ -179,7 +236,7 @@ macroeconomic factors.
  
  \ \\
  
- \item Important: Fit on the training set and then appy imputation on the validation and test set. 
+ \item Important: Fit on the training set and then apply imputation on the validation and test set. 
  
 
 
@@ -188,6 +245,11 @@ macroeconomic factors.
 
 
 \section{Approach} 
+\frame{\frametitle{~}
+
+\centering \huge Approach
+
+}
 
 \subsection{Models}
 
@@ -304,27 +366,83 @@ f(x) = \sum_{i = 1}^N f_i(x)
 \begin{equation*}
 h_t = \sigma(W_{ih} x_t + b_{ih} + W_{hh} h_{(t-1)} + b_{hh})
 \end{equation*}
-\item There are also more sophisticated approched like the LSTM (Long short-term memory). 
+\item There are also more sophisticated approches like the LSTM (Long short-term memory). 
 \end{itemize}
 \end{itemize}
 
 
 }
-
-
-
-
 
 
 
 \subsection{Evaluation}
 \frame{\frametitle{Evaluation} 
-Noch Schreiben. Erkärung des signifikanz tests
+\begin{itemize}
+
+\item The performance of the models is measured by the MSE of the test set: 
+\begin{equation*}
+MSE = \frac{1}{|T|} \sum_{t \in T} (y_t - \hat{y}_t)^2
+\end{equation*}
+
+\ \\ 
+
+
+\item The cartesion product $\Omega$  of the set of all classical models and all machine learning models is formed. The MSE of both is compared:
+\begin{equation*}
+X(\omega) :=\begin{cases}1& \text{if  } MSE_{ML_{\omega}} > MSE_{classic_{\omega}} \\
+ 0 & \text{else} \end{cases}  ~~~  \omega \in  \Omega
+\end{equation*} 
+
+%\item The number of time, when the MSE of the machine learning model is less then the MSE of the classical model 
+
+
+
+ 
+\end{itemize}
 }
 
 
 
+\frame{\frametitle{Evaluation} 
+
+\begin{itemize}
+
+
+
+\item Confidence intervalls of $X$ are approximated by bootstrapping. 
+
+\ \\ 
+
+\item If the lower bound of the confidence intervall is greater than 0.5, the machine learning methods have statisticly significant better performance then the traditional approaches.
+
+\ \\ 
+
+\item Evaluating this approach with two different setting:
+
+\ \\ 
+
+\item Trainig each model with the data of single country.
+
+\ \\ 
+
+\item Training each model with the whole data combined. 
+ 
+
+\end{itemize}
+
+}
+
+
+
+
 \section{Results} 
+\frame{\frametitle{~}
+
+\centering \huge Results
+
+}
+
+
 \subsection{Training on single countries}
 \frame{\frametitle{Results - Training on single countries}
 Tabelle hier
@@ -364,7 +482,17 @@ Tabelle hier
 
 
 
-\section{Conclusion} 
+
+
+
+\section{Conclusion}
+\frame{\frametitle{~}
+
+\centering \huge Conclusion
+
+}
+
+ 
 \frame{\frametitle{Conclusion}
 
 \begin{itemize}
