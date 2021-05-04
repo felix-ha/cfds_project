@@ -1,10 +1,49 @@
 
 \documentclass{beamer}
 
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+\setbeamercolor{itemize item}{bg=gray, fg=gray} 
+\setbeamercolor{itemize subitem}{fg=gray}
+\setbeamercolor{section in toc}{fg=gray}
+\setbeamercolor{subsection in toc shaded}{fg=gray}
+\setbeamercolor{title}{fg=black}
+
+
+\setbeamercolor{frametitle}{fg=white,bg=black}
+%\setbeamertemplate{frametitle}[default][left]
+
+
+\setbeamertemplate{frametitle}
+{%
+\vspace{-0.165ex}
+
+\begin{beamercolorbox}[wd=\paperwidth,dp=1ex, ht=4.5ex, sep=0.5ex, colsep*=0pt]{frametitle}%
+    \usebeamerfont{frametitle}   \strut \insertframetitle  \hfill \raisebox{-2ex}[0pt][-\ht\strutbox ]{ \includegraphics[scale=0.23]{Gestaltung/cfds_logo.png}} 
+    \end{beamercolorbox}%
+ }%
+ 
+ 
+ 
+ 
+ \setbeamertemplate{footline}
+{
+  \leavevmode%
+  \vspace*{0.2cm}
+     \hspace*{-2cm}
+	\color{black}\rule{15cm}{0.2mm}   
+  \hbox{%
+  \begin{beamercolorbox}[wd=1.15\paperwidth,ht=1.5ex,dp=1ex, center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\color{black} CFDS Project \hfill  Slide \insertframenumber /\inserttotalframenumber
+\vspace*{0.02cm}
+  \end{beamercolorbox}}%
+}
+
+
+
 %\usetheme{default}
 
 
-\input{Gestaltung/gestaltung_oth}
+%\input{Gestaltung/gestaltung_oth}
 
 %\AtBeginSection[]{
 %  \begin{frame}
@@ -60,13 +99,18 @@
 
 \author{Felix Jobson
 \ \\}
-%\date{\ \\11. April 2019} 
-\date{\today}
+\date{\ \\ 29.05.2021} 
+%\date{\today}
 %\begin{document} 
+
+{
+\setbeamertemplate{footline}{} 
 \begin{frame}
 \frametitle{~}
 \maketitle 
 \end{frame}
+}
+\addtocounter{framenumber}{-1}
 
 
 
@@ -78,13 +122,18 @@
 
 \frame{\frametitle{Table of contents}\tableofcontents} 
 
-
+{
+\setbeamertemplate{footline}{} 
 \section{Problem Description} 
 \frame{\frametitle{~}
 
 \centering \huge Problem Description
 
 }
+}
+\addtocounter{framenumber}{-1}
+
+
 
  
 \frame{\frametitle{Problem Description}
@@ -106,12 +155,20 @@ macroeconomic factors.
 \end{itemize}
 }
 
+
+{
+\setbeamertemplate{footline}{} 
 \section{Data} 
 \frame{\frametitle{~}
 
 \centering \huge  Data
 
 }
+}
+\addtocounter{framenumber}{-1}
+
+
+
 
 
 
@@ -244,12 +301,19 @@ macroeconomic factors.
 }
 
 
+
+{
+\setbeamertemplate{footline}{} 
 \section{Approach} 
 \frame{\frametitle{~}
 
 \centering \huge Approach
 
 }
+}
+\addtocounter{framenumber}{-1}
+
+
 
 \subsection{Models}
 
@@ -434,13 +498,19 @@ X(\omega) :=\begin{cases}1& \text{if  } MSE_{ML_{\omega}} > MSE_{classic_{\omega
 
 
 
-
+{
+\setbeamertemplate{footline}{} 
 \section{Results} 
 \frame{\frametitle{~}
 
 \centering \huge Results
 
 }
+}
+\addtocounter{framenumber}{-1}
+
+
+
 
 
 \subsection{Training on single countries}
@@ -482,15 +552,19 @@ Tabelle hier
 
 
 
-
-
-
+{
+\setbeamertemplate{footline}{} 
 \section{Conclusion}
 \frame{\frametitle{~}
 
 \centering \huge Conclusion
 
 }
+}
+\addtocounter{framenumber}{-1}
+
+
+
 
 \frame{\frametitle{Conclusion}
 
