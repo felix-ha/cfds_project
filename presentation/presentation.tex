@@ -1,5 +1,5 @@
 
-\documentclass{beamer}
+\documentclass[mathserif]{beamer}
 
 \setbeamertemplate{navigation symbols}{}%remove navigation symbols
 \setbeamercolor{itemize item}{bg=gray, fg=gray} 
@@ -293,7 +293,22 @@ macroeconomic factors.
  
  \ \\
  
- \item Important: Fit on the training set and then apply imputation on the validation and test set. 
+ \item Important: Fit on the training set and then apply imputation on the validation and test set. The same 
+ 
+
+
+ \end{itemize}
+}
+
+
+
+\frame{\frametitle{Split of the dataset}
+ \begin{itemize}
+ \item model selection / assesmsent   
+ 
+ \ \\
+
+ \item see els
  
 
 
@@ -389,10 +404,9 @@ y = x_1\beta_1 + x_2\beta_2 + ... x_N\beta_N + \beta_{N+1}
 \item Regression Tree
 \begin{itemize}
 
-\item Binary tree that groups data with similar vaules into the same leaf. 
-\item This is done to minimize the overall loss: 
+\item Binary tree that groups data with similar vaules into the same leaf. The response in each leaf $L_1, L_2, ..., L_M$ is modeled as constant, so the tree can be expressed as a function: 
 \begin{equation*}
-L(...
+f(x) = \sum_{i = 1}^M c_mI(x \in L_m)
 \end{equation*}
 
 \end{itemize}
@@ -513,40 +527,40 @@ X(\omega) :=\begin{cases}1& \text{if  } MSE_{ML_{\omega}} > MSE_{classic_{\omega
 
 
 
-\subsection{Training on single countries}
-\frame{\frametitle{Results - Training on single countries}
-Tabelle hier
-}
 
-\frame{\frametitle{Results - Training on single countries} 
+\frame{\frametitle{Deep Learning went wrong}
+ 
 \begin{figure}[htbp] 
 \centering
-\includegraphics[scale=0.65]{Germany.png}   
+\includegraphics[scale=0.34]{rnn_optim.png}   
       % \caption{Simulationsumgebung RoboDK.}
 \end{figure}
 }
 
-
-\subsection{Training on whole dataset countries}
-\frame{\frametitle{Results - Training on single countries}
-Tabelle hier
-}
-
-\frame{\frametitle{Results - Training on single countries} 
+\frame{\frametitle{Result Training Single Country}
 \begin{figure}[htbp] 
 \centering
-\includegraphics[scale=0.65]{Germany.png}   
-      % \caption{Simulationsumgebung RoboDK.}
+\includegraphics[scale=0.75]{result_single_models.png}   
+
 \end{figure}
 }
 
 
-\subsection{Test for statistical significance}
+\frame{\frametitle{Result Training All Countries}
+\begin{figure}[htbp] 
+\centering
+\includegraphics[scale=0.75]{result_all_models.png}   
+
+\end{figure}
+}
+
+
+
 \frame{\frametitle{Test for statistical significance}
 \begin{figure}[htbp] 
 \centering
-\includegraphics[scale=0.65]{result.png}   
-      % \caption{Simulationsumgebung RoboDK.}
+\includegraphics[scale=0.75]{result.png}   
+
 \end{figure}
 }
 
@@ -569,7 +583,14 @@ Tabelle hier
 \frame{\frametitle{Conclusion}
 
 \begin{itemize}
-\item asdf
+\item Machine Learning Models can outperfrom approaches!
+\item At least in the given evaluation framework presented
+\item Deep Leraning is not good when there is not that much data
+\item Even simple Machine Learning Model have a decent performance.
+\item Data is very important. 
+\item Data Colleciton and Handling take the most time of the project budget, modelling takes only a fraction.  
+
+\item SVR failed on training with all countries
 \end{itemize}
 
 
