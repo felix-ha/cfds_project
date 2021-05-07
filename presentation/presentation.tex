@@ -148,7 +148,7 @@ macroeconomic factors.
 
 \ \\
 
-\item The baseline models are classical econometric methods and the World Economic Outlook of the International Monetray Fund.
+\item The baseline models are classical econometric methods and the World Economic Outlook of the International Monetary Fund.
 
 
 
@@ -246,13 +246,13 @@ macroeconomic factors.
 
 \ \\
 
-\item In order to receive the same magnitue for an increase as well as a decrease a logarithmic tranformation is used: 
+\item To receive the same magnitude for an increase as well as a decrease a logarithmic transformation is used: 
 
 \ \\
 
 \item 
 \begin{equation*}
-\hat{x}_{i} = \ln(\frac{x_{i}}{x_{i-1}} + |\min_i(x_{i})| + 0.001)
+\hat{x}_{i} = \ln(\frac{x_{i}}{x_{i-1}} + |\min_j(x_{j})| + 0.001)
 \end{equation*}
 \end{itemize}
 }
@@ -280,7 +280,7 @@ macroeconomic factors.
 
 \frame{\frametitle{Impute missing values}
  \begin{itemize}
- \item Only countries with less than 50 \% missing values an are used. Then the top 15 filled variables are selected.  
+ \item Only countries with less than 50 \% missing values are used. Then the top 15 filled variables are selected.  
  
  \ \\
 
@@ -289,11 +289,11 @@ macroeconomic factors.
 \ \\
 
  
- \item Each samples missing values are imputed using the mean value from n nearest neighbors found in the training set.
+ \item Each sample's missing values are imputed using the mean value from n nearest neighbors found in the training set.
  
  \ \\
  
- \item Important: Fit on the training set and then apply imputation on the validation and test set. The same 
+ \item Important: Fit on the training set and then apply imputation on the validation and test set.  
  
 
 
@@ -339,11 +339,11 @@ macroeconomic factors.
 
 \ \\
 
-\item The IMF publishes the WEO twice a year in spring and in fall.
+\item The IMF publishes the WEO twice a year in spring and fall.
 
 \ \\
 
-\item The prediction from the fall is used, as this  iscloser to the next year and therefore the prediction is more precise.
+\item The prediction from the fall is used, as this is closer to the next year and therefore the prediction is more precise.
 \end{itemize}
 }
 
@@ -435,7 +435,7 @@ f(x) = \sum_{i = 1}^N f_i(x)
 
 
 \begin{itemize}
-\item  Reccurent Neural Network
+\item  Recurrent Neural Network
 
 
 \begin{itemize}
@@ -465,7 +465,7 @@ MSE = \frac{1}{|T|} \sum_{t \in T} (y_t - \hat{y}_t)^2
 \ \\ 
 
 
-\item The cartesion product $\Omega$  of the set of all classical models and all machine learning models is formed. The MSE of both is compared:
+\item The cartesian  product $\Omega$  of the set of all classical models and all machine learning models is formed. The MSE of both is compared:
 \begin{equation*}
 X(\omega) :=\begin{cases}1& \text{if  } MSE_{ML_{\omega}} > MSE_{classic_{\omega}} \\
  0 & \text{else} \end{cases}  ~~~  \omega \in  \Omega
@@ -487,23 +487,24 @@ X(\omega) :=\begin{cases}1& \text{if  } MSE_{ML_{\omega}} > MSE_{classic_{\omega
 
 
 
-\item Confidence intervalls of $X$ are approximated by bootstrapping. 
+\item Confidence intervals of $X$ are approximated by bootstrapping. 
 
 \ \\ 
 
-\item If the lower bound of the confidence intervall is greater than 0.5, the machine learning methods have statisticly significant better performance then the traditional approaches.
+\item If the lower bound of the confidence interval is greater than 0.5, the machine learning methods have statistically significant better performance than the traditional approaches.
 
 \ \\ 
 
-\item Evaluating this approach with two different setting:
+\item Evaluating this approach with two different settings:
 
 \ \\ 
 
-\item Trainig each model with the data of single country.
+\item Training each model with the data of a single country.
 
 \ \\ 
 
 \item Training each model with the whole data combined. 
+
  
 
 \end{itemize}
@@ -580,34 +581,81 @@ X(\omega) :=\begin{cases}1& \text{if  } MSE_{ML_{\omega}} > MSE_{classic_{\omega
 
 
 
-\frame{\frametitle{Conclusion}
+\frame{\frametitle{Conclusion I}
 
 \begin{itemize}
 \item Machine Learning Models can outperfrom approaches!
-\item At least in the given evaluation framework presented
-\item Deep Leraning is not good when there is not that much data
-\item Even simple Machine Learning Model have a decent performance.
-\item Data is very important. 
-\item Data Colleciton and Handling take the most time of the project budget, modelling takes only a fraction.  
 
-\item SVR failed on training with all countries
+\ \\
+
+\item At least in the given evaluation framework presented
+
+\ \\
+
+\item Data Colleciton and Handling take the most time of the project budget, modelling takes only a fraction. 
+
+\ \\
+
+\item Deep Leraning does not always provides 
+
+
+
+
+
+ 
+ 
 \end{itemize}
 
+}
 
+\frame{\frametitle{Conclusion II}
+
+\begin{itemize}
+
+\item Even simple Machine Learning Model have a decent performance.
+
+\ \\
+
+\item SVR failed on training with all countries. Knowlegde of a the model is important to fix it, when there are difficulties.
+
+\ \\ 
+
+\item The proposed Deep Reinforcement Learning approach was not sucessfull. 
+
+
+\end{itemize}
 
 }
 
  
-\frame{\frametitle{To Dos}
+\frame{\frametitle{Possible Next Steps}
 
 \begin{itemize}
+\item Collect better Data in terms of quality and quantity. 
+
+\ \\
+
 \item The "expert-based" decesion should be derived based on data
+
+\ \\
+
 \item Analyse feature importance and automate feature selection. 
+
 \end{itemize}
 
+}
 
+
+
+{
+\setbeamertemplate{footline}{} 
+\frame{\frametitle{~}
+
+\centering \huge "All models are wrong, but some are useful"
 
 }
+}
+\addtocounter{framenumber}{-1}
 
 
 
