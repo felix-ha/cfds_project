@@ -206,7 +206,7 @@ macroeconomic factors.
 }
 
 
-\subsection{Variables}
+
 \frame{\frametitle{Variables}
 
 \begin{itemize}
@@ -237,9 +237,31 @@ macroeconomic factors.
 }
 
 
+\frame{\frametitle{Split of the dataset}
+ \begin{itemize}
+ \item Two different purposes: 
+ 
+ \ \\
+ 
+ \item Model selection and model assessment.
+
+ 
+ \ \\
+
+ \item The validation set is used to estimate the prediction error for model selection.
+ 
+ \ \\
+ 
+ \item The test set should be kept in a "vault" and is used to estimte the test error at the end of the analysis. 
+ 
 
 
-\subsection{Missing Values}
+ \end{itemize}
+}
+
+
+
+\subsection{Preparation of the Data}
 \frame{\frametitle{Transforming to Growth Rates}
 \begin{itemize}
 \item Because the variable have different absolute values, growth rates are used. 
@@ -278,6 +300,7 @@ macroeconomic factors.
 }
 
 
+\subsection{Missing Values}
 \frame{\frametitle{Impute missing values}
  \begin{itemize}
  \item Only countries with less than 50 \% missing values are used. Then the top 15 filled variables are selected.  
@@ -302,18 +325,7 @@ macroeconomic factors.
 
 
 
-\frame{\frametitle{Split of the dataset}
- \begin{itemize}
- \item model selection / assesmsent   
- 
- \ \\
 
- \item see els
- 
-
-
- \end{itemize}
-}
 
 
 
@@ -579,30 +591,23 @@ X(\omega) :=\begin{cases}1& \text{if  } MSE_{ML_{\omega}} > MSE_{classic_{\omega
 \addtocounter{framenumber}{-1}
 
 
-
-
 \frame{\frametitle{Conclusion I}
 
 \begin{itemize}
-\item Machine Learning Models can outperfrom approaches!
+\item Machine learning models can outperform traditional approaches!
 
 \ \\
 
-\item At least in the given evaluation framework presented
+\item At least in the given evaluation framework presented.
 
 \ \\
 
-\item Data Colleciton and Handling take the most time of the project budget, modelling takes only a fraction. 
+\item Data collection and handling take the most time from the project budget, modelling takes only a fraction. 
 
 \ \\
 
-\item Deep Leraning does not always provides 
+\item Deep learning relies heavily on the amount of data and fails if there is not enough available.  
 
-
-
-
-
- 
  
 \end{itemize}
 
@@ -612,15 +617,15 @@ X(\omega) :=\begin{cases}1& \text{if  } MSE_{ML_{\omega}} > MSE_{classic_{\omega
 
 \begin{itemize}
 
-\item Even simple Machine Learning Model have a decent performance.
+\item Even simple machine learning models have a decent performance.
 
 \ \\
 
-\item SVR failed on training with all countries. Knowlegde of a the model is important to fix it, when there are difficulties.
+\item SVR failed on training with all countries. A profound understanding of the model is important to understand problems. 
 
 \ \\ 
 
-\item The proposed Deep Reinforcement Learning approach was not sucessfull. 
+\item The proposed deep reinforcement learning approach was not successful. 
 
 
 \end{itemize}
@@ -635,11 +640,15 @@ X(\omega) :=\begin{cases}1& \text{if  } MSE_{ML_{\omega}} > MSE_{classic_{\omega
 
 \ \\
 
-\item The "expert-based" decesion should be derived based on data
+\item The "expert-based" decision should be derived based on data.
 
 \ \\
 
 \item Analyse feature importance and automate feature selection. 
+
+\ \\ 
+
+\item Analyse the transformation of the data and use a more sophisticated approach. 
 
 \end{itemize}
 
@@ -660,3 +669,5 @@ X(\omega) :=\begin{cases}1& \text{if  } MSE_{ML_{\omega}} > MSE_{classic_{\omega
 
 
 \end{document}
+
+
